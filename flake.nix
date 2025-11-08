@@ -42,9 +42,11 @@
             lockFile = ./Cargo.lock;
           };
 
-          nativeBuildInputs = with pkgs; [
+          nativeBuildInputs = [
             rustToolchain
           ];
+
+          __darwinAllowLocalNetworking = true;
 
           nativeCheckInputs = [ pkgs.openssh ];
 

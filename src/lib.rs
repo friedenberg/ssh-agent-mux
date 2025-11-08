@@ -199,7 +199,17 @@ impl MuxAgent {
                     continue;
                 }
             };
-            let agent_identities = client.request_identities().await?;
+            let agent_identities = match client.request_identities().await {
+                Ok(ids) => ids,
+                Err(e) => {
+                    log::warn!(
+                        "Failed to request identities from upstream agent socket <{}>: {}",
+                        sock_path.display(),
+                        e
+                    );
+                    continue;
+                }
+            };
             {
                 for id in &agent_identities {
                     known_keys.insert(id.pubkey.clone(), sock_path.clone());
